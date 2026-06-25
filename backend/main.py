@@ -42,9 +42,9 @@ app.add_middleware(
 
 # ─── Startup ─────────────────────────────────────────────────────────────────
 
-@app.on_event("startup")
-def startup_event():
-    run_migrations()
+# @app.on_event("startup")
+# def startup_event():
+#     run_migrations()
 
 
 # ─── Dependency ──────────────────────────────────────────────────────────────
