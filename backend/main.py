@@ -1,7 +1,5 @@
 from fastapi import FastAPI, HTTPException, Query, Depends, Request, Response, Cookie
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
 from typing import Optional
 import os
 
@@ -19,15 +17,6 @@ from schemas import (
 
 app = FastAPI(title="Kira Mission Tracker API", version="1.0.0")
 
-# Define paths
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-# Assuming backend and frontend are sibling directories as per your architecture.md
-FRONTEND_DIR = os.path.join(os.path.dirname(BASE_DIR), "frontend")
-TEMPLATES_DIR = os.path.join(FRONTEND_DIR, "templates")
-STATIC_DIR = os.path.join(FRONTEND_DIR, "static")
-
-# Mount the static directory
-app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
 # ─── CORS ────────────────────────────────────────────────────────────────────
 
@@ -42,9 +31,9 @@ app.add_middleware(
 
 # ─── Startup ─────────────────────────────────────────────────────────────────
 
-# @app.on_event("startup")
-# def startup_event():
-#     run_migrations()
+@app.on_event("startup")
+def startup_event():
+    run_migrations()
 
 
 # ─── Dependency ──────────────────────────────────────────────────────────────
@@ -263,15 +252,6 @@ def _serialize(obj):
     else:
         return obj
     
-# ─── Frontend Routes ─────────────────────────────────────────────────────────
-
-@app.get("/", tags=["Frontend"])
-def serve_index():
-    return FileResponse(os.path.join(TEMPLATES_DIR, "index.html"))
-
-@app.get("/login", tags=["Frontend"])
-def serve_login():
-    return FileResponse(os.path.join(TEMPLATES_DIR, "login.html"))
 
 
 def _serialize_list(lst):
