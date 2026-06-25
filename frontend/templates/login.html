@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Orbitron:wght@600;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="/static/style.css" />
+  <link rel="stylesheet" href="/static/login.css" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          'sky-deep': '#0B0F2E',
+          'sky-mid': '#151A3E',
+          'sky-surface': '#1E2550',
+          'sakura': '#FF6B9D',
+          'kira': '#7EB8FF',
+          'sora': '#A78BFA',
+          'ki': '#FFD166',
+          'midori': '#06D6A0',
+          'aka': '#EF476F',
+        }
+      }
+    }
+  }
+  </script>
+</head>
+<body class="bg-[#0B0F2E] font-inter text-[#F0F4FF] min-h-screen flex items-center justify-center antialiased overflow-hidden">
+  
+  <!-- Cinematic Background -->
+  <div class="login-bg-fx">
+    <div class="particles" id="particles-container"></div>
+  </div>
+
+  <div class="login-container w-full max-w-md relative z-10 px-6">
+    <div class="login-glass-panel flex flex-col items-center">
+      
+      <!-- Logo Header -->
+      <div class="text-center mb-8 logo-stagger">
+        <div class="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-sakura to-kira p-[2px] shadow-[0_0_30px_rgba(255,107,157,0.4)]">
+          <div class="w-full h-full bg-[#0B0F2E] rounded-[14px] flex items-center justify-center">
+            <span class="text-sakura text-3xl drop-shadow-[0_0_10px_rgba(255,107,157,1)]">◈</span>
+          </div>
+        </div>
+        <h1 class="font-display text-3xl tracking-widest text-white drop-shadow-lg mb-1">PROJECT<span class="text-sakura">TRACKER</span></h1>
+        <p class="text-xs text-[#7EB8FF] font-display tracking-[0.3em] opacity-80 mb-2">A.I. COMMAND CENTER</p>
+        <p class="text-[10px] text-sakura/80 font-jp tracking-widest">認証システム</p>
+      </div>
+
+      <!-- Login Form -->
+      <form id="login-form" class="w-full flex flex-col gap-6 form-stagger" novalidate>
+        
+        <div class="input-group">
+          <input type="text" id="username" class="login-input" required autocomplete="username" />
+          <label for="username" class="login-label font-display tracking-widest">USERNAME</label>
+        </div>
+        
+        <div class="input-group">
+          <input type="password" id="password" class="login-input" style="padding-right: 48px;" required autocomplete="current-password" />
+          <label for="password" class="login-label font-display tracking-widest">AUTHORIZATION CODE</label>
+          <button type="button" id="toggle-password" class="absolute right-4 top-1/2 -translate-y-1/2 text-[#5C6494] hover:text-sakura transition-colors focus:outline-none" tabindex="-1">
+            <!-- Eye Show -->
+            <svg id="eye-show" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+            </svg>
+            <!-- Eye Hide -->
+            <svg id="eye-hide" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+            </svg>
+          </button>
+        </div>
+
+        <div class="flex items-center justify-between px-1">
+          <label class="flex items-center gap-3 cursor-pointer group">
+            <div class="relative w-4 h-4 rounded bg-black/50 border border-white/20 group-hover:border-sakura transition-colors flex items-center justify-center">
+              <input type="checkbox" id="remember" class="opacity-0 absolute w-full h-full cursor-pointer" />
+              <svg class="w-3 h-3 text-sakura opacity-0 transition-opacity" id="check-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+            </div>
+            <span class="text-[11px] font-display tracking-widest text-[#9BA8CC] group-hover:text-white transition-colors">PERSIST SESSION</span>
+          </label>
+        </div>
+
+        <div id="login-error" class="text-xs text-aka bg-aka/10 border border-aka/30 p-3 rounded-lg text-center hidden font-display tracking-wider">
+          AUTHENTICATION FAILED
+        </div>
+
+        <button type="submit" id="btn-login" class="btn-login mt-2">
+          <span class="btn-text">INITIALIZE LINK</span>
+          <div class="btn-spinner hidden"></div>
+        </button>
+      </form>
+
+    </div>
+  </div>
+
+  <script src="/static/login.js"></script>
+</body>
+</html>
