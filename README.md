@@ -4,11 +4,10 @@
 
 **A Full-Stack Personal Project Management System**
 
-*Built with FastAPI · Flask · PostgreSQL · Vanilla JavaScript*
+*Built with FastAPI · PostgreSQL · Vanilla JavaScript*
 
 [![Python](https://img.shields.io/badge/Python-3.9+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
-[![Flask](https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white)](https://flask.palletsprojects.com/)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 
@@ -38,15 +37,17 @@
 
 ## 🌟 Overview
 
-**Kira Mission Tracker** is a modern, full-stack personal project management application designed with a cinematic, anime-inspired UI aesthetic. It provides a clean separation between backend API services (FastAPI) and frontend presentation (Flask), offering real-time project tracking, task management, and comprehensive analytics through an immersive dashboard experience.
+**Project Tracker** (also known as **Kira Mission Tracker**) is a modern, full-stack personal project management application designed with a cinematic, anime-inspired UI aesthetic. Built entirely on FastAPI, it offers a unified architecture where the same server handles both API endpoints and frontend delivery, providing real-time project tracking, task management, and comprehensive analytics through an immersive "Mission Control" dashboard experience.
 
 ### Why This Project?
 
-- **Clean Architecture**: Separation of concerns with dedicated API and frontend servers
-- **Modern UI/UX**: Inspired by AAA game interfaces and anime aesthetics
+- **Unified Architecture**: Single FastAPI server handles both API and frontend (simplified deployment)
+- **Modern UI/UX**: Inspired by AAA game interfaces and anime aesthetics with Mission Control theme
 - **Real-time Updates**: Optimistic UI updates for instant feedback
-- **Secure Authentication**: Session-based authentication with HTTP-only cookies
+- **Secure Authentication**: Session-based authentication with HTTP-only cookies and automatic redirects
 - **Production-Ready**: Built with PostgreSQL/NeonDB for scalability
+- **Zero Framework Frontend**: Pure Vanilla JavaScript with no dependencies
+- **Dual View System**: Read-only Mission Control view + Edit override mode
 
 ---
 
@@ -65,11 +66,15 @@
 - **Toggle Completion**: Instant task status updates with optimistic UI
 - **Task Deletion**: Remove completed or obsolete tasks
 
-### 📊 Analytics Dashboard
+### 📊 Analytics Dashboard (Mission Control)
 - **Live Statistics**: Total projects, active, completed, and overdue counts
 - **Mission Rank System**: Gamified ranking based on task completion (S, A, B, C ranks)
-- **Progress Visualization**: Circular progress rings and bars
+- **Progress Visualization**: Circular SVG progress rings and horizontal bars
 - **Achievement System**: Unlock achievements as you progress
+- **Dual View System**: 
+  - **Read-Only Mission Control View**: Hero banner, 3-column dashboard layout, timeline
+  - **Edit Override Mode**: Form-based editing with system override aesthetics
+- **AI Summary Section**: Placeholder for future AI-powered project insights
 
 ### 🔐 Authentication & Security
 - **Session-based Authentication**: Secure HTTP-only cookies
@@ -79,35 +84,40 @@
 
 ### 🎨 UI/UX Excellence
 - **Cinematic Interface**: AAA game-inspired design language
-- **Anime Aesthetics**: Japanese typography, neon accents, glass morphism
-- **Smooth Animations**: Spring physics, parallax effects, 3D transforms
+- **Anime Aesthetics**: Japanese typography (Noto Sans JP), neon accents, glass morphism
+- **Smooth Animations**: Spring physics, parallax effects, 3D transforms, staggered entrances
 - **Responsive Design**: Fully responsive from mobile to desktop
-- **Dark Theme**: Eye-friendly dark mode with vibrant accent colors
+- **Dark Theme**: Eye-friendly dark mode with vibrant accent colors (Sakura pink, Kira blue)
 - **Toast Notifications**: Non-intrusive feedback for all actions
-- **Loading States**: Animated loaders for all async operations
-- **Empty States**: Elegant empty state designs with Japanese kanji
+- **Loading States**: Three-dot floating anime loaders for all async operations
+- **Empty States**: Elegant empty state designs with Japanese kanji (無 - "nothing")
+- **Password Toggle**: Eye icon to show/hide passwords on login
+- **Floating Labels**: Material-design inspired input labels
+- **Backdrop Blur**: Glassmorphism effects throughout the UI
+- **Animated Particles**: Background particle system on login page
 
 ---
 
 ## 🛠 Tech Stack
 
-### Backend
+### Backend & Frontend (Unified)
 
 | Component | Technology | Purpose |
 |-----------|------------|---------|
-| **API Framework** | FastAPI | High-performance REST API with automatic OpenAPI docs |
+| **Framework** | FastAPI | High-performance REST API + Frontend server with automatic OpenAPI docs |
 | **Server** | Uvicorn | ASGI server for async Python |
+| **Static File Serving** | FastAPI StaticFiles | Serves CSS, JS, images, and favicon |
+| **Template Serving** | FastAPI FileResponse | Serves HTML templates |
 | **Database** | PostgreSQL (NeonDB) | Serverless PostgreSQL database |
 | **Database Driver** | psycopg2-binary | PostgreSQL adapter for Python |
 | **Schema Validation** | Pydantic | Data validation and settings management |
 | **Environment** | python-dotenv | Environment variable management |
 | **HTTP Client** | httpx | Async HTTP client for testing |
 
-### Frontend
+### Frontend Stack
 
 | Component | Technology | Purpose |
 |-----------|------------|---------|
-| **File Server** | Flask | Static file serving and routing |
 | **UI Framework** | Vanilla JavaScript | Zero dependencies, pure JavaScript |
 | **Styling** | Custom CSS + Tailwind CDN | Modern utility-first CSS framework |
 | **Typography** | Google Fonts | Inter, Orbitron, Noto Sans JP |
@@ -127,31 +137,42 @@
 ### System Design
 
 ```
-┌─────────────────┐
-│   Browser       │
-│  (Port 5000)    │
-└────────┬────────┘
-         │ HTTP Requests
-         ▼
-┌─────────────────┐      ┌──────────────────┐
-│  Flask Server   │      │  FastAPI Backend │
-│  (Frontend)     │──────▶  (API Server)    │
-│  Port 5000      │      │  Port 8000       │
-└─────────────────┘      └────────┬─────────┘
-                                  │
-                                  │ SQL Queries
-                                  ▼
-                         ┌─────────────────┐
-                         │  PostgreSQL DB  │
-                         │   (NeonDB)      │
-                         └─────────────────┘
+┌─────────────────────────────────────┐
+│          Browser                    │
+│      (Port 8000)                    │
+└──────────────┬──────────────────────┘
+               │
+               │ HTTP Requests
+               ▼
+┌──────────────────────────────────────┐
+│     FastAPI Unified Server           │
+│         (Port 8000)                  │
+│  ┌────────────────────────────────┐  │
+│  │  Frontend Routes                │  │
+│  │  - / → index.html               │  │
+│  │  - /login → login.html          │  │
+│  │  - /static → Static files       │  │
+│  └────────────────────────────────┘  │
+│                                      │
+│  ┌────────────────────────────────┐  │
+│  │  API Routes (/api/*)            │  │
+│  │  - Auth, Projects, Tasks, Stats │  │
+│  └────────────────────────────────┘  │
+└──────────────┬───────────────────────┘
+               │
+               │ SQL Queries
+               ▼
+      ┌─────────────────┐
+      │  PostgreSQL DB  │
+      │   (NeonDB)      │
+      └─────────────────┘
 ```
 
 ### Data Flow
 
-1. **User Interaction** → Browser sends request to Flask server (port 5000)
-2. **Static Assets** → Flask serves HTML, CSS, JS files
-3. **API Calls** → JavaScript makes async fetch calls to FastAPI (port 8000)
+1. **User Interaction** → Browser sends request to FastAPI server (port 8000)
+2. **Static Assets** → FastAPI serves HTML templates and static files (CSS, JS, favicon)
+3. **API Calls** → JavaScript makes async fetch calls to FastAPI API routes (/api/*)
 4. **Authentication** → Session cookie validates user identity
 5. **Database Operations** → FastAPI executes raw SQL queries via psycopg2
 6. **Response** → JSON data returned to frontend, UI updates dynamically
@@ -227,36 +248,28 @@ ADMIN_PASSWORD=your_secure_password
 2. Create a new project
 3. Copy the connection string from **Connection Details**
 
-5. **Start the Backend Server**
+5. **Start the Application Server**
 
 ```bash
 uvicorn backend.main:app --reload --port 8000
 ```
 
-The API will be available at `http://localhost:8000`
+The application will be available at `http://localhost:8000`
 
 **API Documentation:** `http://localhost:8000/docs`
 
-6. **Start the Frontend Server**
-
-In a **new terminal window**:
-
-```bash
-python frontend/app.py
-```
-
-The frontend will be available at `http://localhost:5000`
-
-7. **Access the Application**
+6. **Access the Application**
 
 Open your browser and navigate to:
 ```
-http://localhost:5000/login
+http://localhost:8000/login
 ```
 
 **Default Credentials:**
-- Username: `indiser` (or as configured in `.env`)
-- Password: `RANA` (or as configured in `.env`)
+- Username: `indiser`
+- Password: `RANA`
+
+> **Note**: These credentials are configured in your `.env` file and seeded automatically on first startup if no users exist in the database.
 
 ---
 
@@ -265,17 +278,15 @@ http://localhost:5000/login
 ```
 project-tracker/
 │
-├── backend/                      # FastAPI Backend
+├── backend/                      # FastAPI Unified Server
 │   ├── __init__.py              # Package initialization
-│   ├── main.py                  # FastAPI app & all API routes
+│   ├── main.py                  # FastAPI app (API routes + frontend serving)
 │   ├── database.py              # PostgreSQL connection & migrations
 │   ├── schemas.py               # Pydantic models for validation
 │   ├── crud.py                  # Database operations (raw SQL)
 │   └── auth_service.py          # Authentication logic & session management
 │
-├── frontend/                     # Flask Frontend
-│   ├── app.py                   # Flask server for static files
-│   │
+├── frontend/                     # Frontend Assets
 │   ├── templates/               # HTML Templates
 │   │   ├── index.html          # Main dashboard
 │   │   └── login.html          # Login page
@@ -288,6 +299,13 @@ project-tracker/
 │       ├── dashboard.css       # Mission Control dashboard styles
 │       ├── login.css           # Login page styles
 │       └── favicon/            # Application icons
+│           ├── android-chrome-192x192.png
+│           ├── android-chrome-512x512.png
+│           ├── apple-touch-icon.png
+│           ├── favicon-16x16.png
+│           ├── favicon-32x32.png
+│           ├── favicon.ico
+│           └── site.webmanifest
 │
 ├── .env                         # Environment variables (create this)
 ├── .gitignore                   # Git ignore rules
@@ -299,19 +317,23 @@ project-tracker/
 
 #### Backend Files
 
-- **`main.py`**: Central FastAPI application with all routes (auth, projects, tasks, stats)
-- **`database.py`**: Database connection setup, migration runner, table creation
+- **`main.py`**: Central FastAPI application with:
+  - All API routes (auth, projects, tasks, stats)
+  - Frontend route handlers (/, /login)
+  - Static file mounting (/static)
+  - Template serving via FileResponse
+- **`database.py`**: Database connection setup, migration runner, table creation, admin user seeding
 - **`schemas.py`**: Pydantic schemas for request/response validation
 - **`crud.py`**: Raw SQL queries for all database operations
 - **`auth_service.py`**: Password hashing, session management, authentication helpers
 
 #### Frontend Files
 
-- **`app.py`**: Flask server serving HTML templates and static files
-- **`index.html`**: Main dashboard with stats, project cards, modals
-- **`login.html`**: Authentication page with floating label inputs
+- **`index.html`**: Main dashboard with stats, project cards, modals, read-only/edit views
+- **`login.html`**: Authentication page with floating label inputs and password toggle
 - **`app.js`**: All frontend logic (API calls, DOM manipulation, state management)
-- **`auth.js`**: Global fetch interceptor for automatic authentication
+- **`auth.js`**: Global fetch interceptor for automatic authentication and redirect
+- **`login.js`**: Login form handling with validation
 - **`style.css`**: Design system (variables, components, animations)
 - **`dashboard.css`**: Mission Control-specific styles (3-column layout, progress rings)
 
@@ -323,6 +345,38 @@ project-tracker/
 ```
 http://localhost:8000
 ```
+
+### Frontend Routes
+
+#### Serve Dashboard
+```http
+GET /
+
+Response: 200 OK
+Serves index.html (main dashboard)
+```
+
+#### Serve Login Page
+```http
+GET /login
+
+Response: 200 OK
+Serves login.html (authentication page)
+```
+
+#### Static Assets
+```http
+GET /static/{path}
+
+Examples:
+- /static/app.js
+- /static/style.css
+- /static/favicon/favicon.ico
+```
+
+---
+
+### API Endpoints
 
 ### Authentication Endpoints
 
@@ -844,12 +898,29 @@ SOFTWARE.
 
 ## 🙏 Acknowledgments
 
-- **FastAPI** - Modern, fast web framework for Python
-- **Flask** - Lightweight WSGI web application framework
+- **FastAPI** - Modern, fast web framework for Python (handling both API and frontend)
 - **PostgreSQL** - Powerful, open-source object-relational database
 - **NeonDB** - Serverless PostgreSQL platform
 - **Tailwind CSS** - Utility-first CSS framework
 - **Google Fonts** - Open-source font library
+
+---
+
+## 🔑 Architecture Evolution
+
+This project has evolved to use a **unified FastAPI architecture** where a single server handles both API endpoints and frontend delivery. This simplifies deployment and removes the need for a separate Flask server.
+
+**Key Benefits:**
+- ✅ Single server (port 8000) instead of two
+- ✅ Simplified deployment and maintenance
+- ✅ Better performance (no HTTP round-trips between servers)
+- ✅ Unified codebase in `backend/main.py`
+- ✅ Easier development workflow
+
+**What Changed:**
+- Removed `frontend/app.py` (Flask server)
+- Added frontend routes to `backend/main.py` (`/`, `/login`)
+- FastAPI now serves both API responses and HTML templates
 
 ---
 

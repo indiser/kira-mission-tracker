@@ -12,7 +12,7 @@ window.fetch = async function(...args) {
     let [resource, config] = args;
     
     // Auto-inject credentials to allow session cookies cross-origin
-    if (typeof resource === 'string' && (resource.includes('localhost:8000') || resource.includes('/api/'))) {
+    if (typeof resource === 'string' && resource.includes('/api/')) {
         config = config || {};
         config.credentials = 'include';
         args = [resource, config];
@@ -34,7 +34,7 @@ window.fetch = async function(...args) {
 
 // If we are on the dashboard, proactively check authentication before rendering
 if (window.location.pathname === '/') {
-    fetch('http://localhost:8000/api/auth/me')
+    fetch('/api/auth/me')
         .then(res => {
             if (res.status === 401) {
                 window.location.href = '/login';
@@ -53,7 +53,7 @@ if (window.location.pathname === '/') {
 
 // Global logout function accessible from HTML
 window.logout = function() {
-    fetch('http://localhost:8000/api/auth/logout', { method: 'POST' })
+    fetch('/api/auth/logout', { method: 'POST' })
         .then(() => {
             window.location.href = '/login';
         });

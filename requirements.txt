@@ -1,6 +1,5 @@
 fastapi
 uvicorn
-flask
 psycopg2-binary
 python-dotenv
 pydantic
