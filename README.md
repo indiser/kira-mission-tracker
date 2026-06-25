@@ -1,6 +1,6 @@
-# 🎯 Kira Mission Tracker
-
 <div align="center">
+
+# 🎯 Kira Mission Tracker
 
 **A Full-Stack Personal Project Management System**
 
@@ -187,8 +187,8 @@
 1. **Clone the Repository**
 
 ```bash
-git clone <repository-url>
-cd project-tracker
+git clone https://github.com/indiser/kira-mission-tracker.git
+cd kira-mission-tracker
 ```
 
 2. **Create Virtual Environment**
@@ -855,9 +855,9 @@ SOFTWARE.
 
 ## 📞 Contact & Support
 
-- **Issues**: [GitHub Issues](https://github.com/yourusername/project-tracker/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/yourusername/project-tracker/discussions)
-- **Email**: your.email@example.com
+- **Issues**: [GitHub Issues](https://github.com/indiser/kira-mission-tracker/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/indiser/kira-mission-tracker/discussions)
+- **Email**: indiser01@gmail.com
 
 ---
 
